@@ -1,6 +1,5 @@
 import * as React from "react"
 import {ChakraProvider, theme,} from "@chakra-ui/react"
-import {Router} from "react-router-dom";
 import Home from "./home/Home";
 
 export const App = () => (

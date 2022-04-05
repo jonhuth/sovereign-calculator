@@ -1,6 +1,7 @@
-import {Box, Button, Center, Flex, Grid, Link, SimpleGrid, Spacer} from "@chakra-ui/react";
+import {Box, Button, Center, Flex, Grid, Link, SimpleGrid, Spacer, VStack} from "@chakra-ui/react";
 import {ColorModeSwitcher} from "../ColorModeSwitcher";
 import * as React from "react";
+import Footer from "../Components/Footer";
 
 const Home = () => {
   return <Box textAlign="center" fontSize="xl">
@@ -14,6 +15,7 @@ const Home = () => {
         <Center bg="orange" height="80px"><Link>Impermanent Loss Calculator</Link></Center>
         <Center bg="orange" height="80px"><Link>Fee Drag Calculator</Link></Center>
       </SimpleGrid>
+      <Footer></Footer>
     </Grid>
   </Box>;
 }

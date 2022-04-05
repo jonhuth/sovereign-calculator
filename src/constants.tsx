@@ -1,0 +1,1 @@
+export const personalSiteUrl: string = 'https://jonhuth.github.io/personal/';
