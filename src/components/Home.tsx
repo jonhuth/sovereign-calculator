@@ -12,7 +12,7 @@ const Home = () => {
         <Text fontSize='2xl'>Tools to help you become a Sovereign Individual!</Text>
       </Box>
       <Box>
-        <Text fontSize='1x1' mb='6'>Tools</Text>
+        <Text fontSize='1x1' mb='10'>Tools</Text>
         <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={3} justifySelf='center'>
           <Item title='Impermanent Loss Calculator' link='/impermanent-loss'></Item>
           <Item title='Fee Drag Calculator' link='/fee-drag'></Item>

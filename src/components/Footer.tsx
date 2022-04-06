@@ -4,7 +4,7 @@ import { personalSiteUrl } from '../constants';
 const Footer = () => (
   <Flex
     width="100%"
-    justifyContent="center"
+    justifyContent="end"
     alignItems="center"
     direction="column"
     padding={4}>
