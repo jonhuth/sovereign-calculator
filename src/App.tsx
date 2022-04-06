@@ -6,7 +6,7 @@ import {
 } from "react-router-dom";
 import FeeDrag from "./components/FeeDrag";
 import Home from "./components/Home";
-import ImpermanentLoss from "./components/ImpermanentLoss";
+import ImpermanentLoss from "./components/impermanent-loss/ImpermanentLoss";
 import PortfolioComparison from "./components/PortfolioComparison";
 import StockScreener from "./components/StockScreener";
 
