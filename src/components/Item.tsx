@@ -1,4 +1,5 @@
-import { Box, Center, Link } from "@chakra-ui/react";
+import { Flex, Link } from "@chakra-ui/react";
+import { Link as RouteLink } from "react-router-dom";
 
 interface _Item {
   title: string,
@@ -6,11 +7,12 @@ interface _Item {
 };
 
 const Item = ({ title, link }: _Item) => (
-  <Box borderWidth='1px' maxWidth={500} h={100} borderRadius='lg' overflow='hidden' bg='orange'>
-    <Center h='80px'>
-      <Link href={link}>{title}</Link>
-    </Center>
-  </Box>
+  <Flex borderWidth='1px' maxWidth={500} h={100} borderRadius='lg' bg='orange'
+    justifyContent="center"
+    alignItems="center"
+    direction="column">
+    <Link as={RouteLink} to={link}>{title}</Link>
+  </Flex>
 );
 
 export default Item;

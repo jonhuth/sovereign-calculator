@@ -7,8 +7,7 @@ const Footer = () => (
     justifyContent="center"
     alignItems="center"
     direction="column"
-    padding={4}
-  >
+    padding={4}>
     <Box mt={8}>Made with ❤ by <Link href={personalSiteUrl}>Jonathan</Link></Box>
   </Flex>
 );
