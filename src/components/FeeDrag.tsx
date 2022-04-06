@@ -2,7 +2,7 @@ import { Box, Grid } from "@chakra-ui/react";
 import Banner from "./Banner";
 import Footer from "./Footer";
 
-const ImpermanentLoss = () => {
+const FeeDrag = () => {
   return <Box textAlign="center" fontSize="xl">
     <Grid minH="100vh" p={3}>
       <Banner></Banner>
@@ -12,4 +12,4 @@ const ImpermanentLoss = () => {
   </Box>;
 }
 
-export default ImpermanentLoss;
+export default FeeDrag;
