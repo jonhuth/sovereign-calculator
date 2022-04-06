@@ -7,7 +7,7 @@ interface _Item {
 };
 
 const Item = ({ title, link }: _Item) => (
-  <Flex borderWidth='1px' maxWidth={500} h={100} borderRadius='lg' bg='orange'
+  <Flex borderWidth='1px' maxWidth={500} w={350} h={100} borderRadius='lg' bg='orange'
     justifyContent="center"
     alignItems="center"
     direction="column">

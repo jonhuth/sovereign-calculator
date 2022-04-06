@@ -11,9 +11,9 @@ const Home = () => {
         <Heading fontSize='4xl'>Sovereign Individual</Heading>
         <Text fontSize='2xl'>Tools to help you become a Sovereign Individual!</Text>
       </Box>
-      <Box>
+      <Box justifySelf={'center'}>
         <Text fontSize='1x1' mb='10'>Tools</Text>
-        <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={3} justifySelf='center'>
+        <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={5} justifySelf='center'>
           <Item title='Impermanent Loss Calculator' link='/impermanent-loss'></Item>
           <Item title='Fee Drag Calculator' link='/fee-drag'></Item>
           <Item title='Portfolio Comparison' link='/portfolio-comparison'></Item>
