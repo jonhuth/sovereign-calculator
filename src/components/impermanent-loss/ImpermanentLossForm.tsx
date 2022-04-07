@@ -1,19 +1,19 @@
-import { Button, FormControl, FormLabel, Input } from "@chakra-ui/react";
+import { Button } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
+import { calculateImpermanentLoss } from './helpers';
 
-const calculateImpermanentLoss = () => {
-  return;
-}
+
 
 const ImpermanentLossForm = () => {
   const initValues = {
-    token1: '', 
-    token2: '', 
-    startDate: null, 
-    endDate: null
+    token1: '',
+    token2: '',
+    startDate: null,
+    endDate: null,
+    positionSize: null
   }
   const onSubmit = () => {
-    calculateImpermanentLoss(); //todo
+    // calculateImpermanentLoss(token1, token2, startDate, endDate); //todo
   };
   return (
     <Formik
