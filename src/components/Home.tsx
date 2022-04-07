@@ -1,7 +1,7 @@
 import { Box, Grid, Heading, SimpleGrid, Text } from "@chakra-ui/react";
-import Banner from "./Banner";
-import Footer from "./Footer";
-import Item from "./Item";
+import Banner from "./general/Banner";
+import Footer from "./general/Footer";
+import Item from "./general/Item";
 
 const Home = () => {
   return <Box textAlign="center" fontSize="xl">
@@ -9,7 +9,8 @@ const Home = () => {
       <Banner></Banner>
       <Box>
         <Heading fontSize='4xl'>Sovereign Individual</Heading>
-        <Text fontSize='2xl'>Tools to help you become a Sovereign Individual!</Text>
+        <Text fontSize='2xl'>Tools for the Sovereign Age!</Text>
+        {/* <Text fontSize='2xl'>Tools to help you become a Sovereign Individual!</Text> */}
       </Box>
       <Box justifySelf={'center'}>
         <Text fontSize='1x1' mb='10'>Tools</Text>

@@ -1,5 +1,5 @@
 import { Button, Flex, Link, Spacer } from "@chakra-ui/react";
-import { ColorModeSwitcher } from "../ColorModeSwitcher";
+import { ColorModeSwitcher } from "../../ColorModeSwitcher";
 import { Link as RouteLink } from "react-router-dom";
 
 const Banner = () => (

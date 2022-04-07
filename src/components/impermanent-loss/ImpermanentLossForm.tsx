@@ -23,12 +23,12 @@ const ImpermanentLossForm = () => {
       {(props) => (
         <Form>
           <Field name='token1'>
-            {({ field, form }) => {
+            {/* {({ field, form }) => {
               <FormControl isInvalid={form.errors.token1 && form.touched.token1}>
                 <FormLabel htmlFor='token1'>Token 1</FormLabel>
                 <Input {...field} id='token1' placeholder='token1' />
               </FormControl>
-            }}
+            }} */}
           </Field>
           <Button
             mt={4}

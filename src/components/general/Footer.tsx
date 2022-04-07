@@ -1,5 +1,5 @@
 import { Box, Flex, Link } from "@chakra-ui/react";
-import { personalSiteUrl } from '../constants';
+import { personalSiteUrl } from '../../constants';
 
 const Footer = () => (
   <Flex

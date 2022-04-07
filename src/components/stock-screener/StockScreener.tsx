@@ -1,8 +1,8 @@
 import { Box, Grid } from "@chakra-ui/react";
-import Banner from "./Banner";
-import Footer from "./Footer";
+import Banner from "../general/Banner";
+import Footer from "../general/Footer";
 
-const PortfolioComparison = () => {
+const StockScreener = () => {
   return <Box textAlign="center" fontSize="xl">
     <Grid minH="100vh" p={3}>
       <Banner></Banner>
@@ -12,4 +12,4 @@ const PortfolioComparison = () => {
   </Box>;
 }
 
-export default PortfolioComparison;
+export default StockScreener;

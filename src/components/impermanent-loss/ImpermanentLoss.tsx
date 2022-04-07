@@ -1,8 +1,7 @@
-import { Box, Grid, Heading, Text } from "@chakra-ui/react";
-import Banner from "../Banner";
-import Footer from "../Footer";
+import { Box, Grid, Heading, Text } from '@chakra-ui/react';
+import Banner from "../general/Banner";
+import Footer from '../general/Footer';
 import ImpermanentLossForm from "./ImpermanentLossForm";
-import ImpermanentLossCalculator from "./ImpermanentLossForm";
 
 const ImpermanentLoss = () => {
   return <Box textAlign="center" fontSize="xl">
