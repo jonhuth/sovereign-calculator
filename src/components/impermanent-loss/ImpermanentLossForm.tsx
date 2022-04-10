@@ -1,44 +1,48 @@
-import { Button } from "@chakra-ui/react";
+import { Box, Button } from "@chakra-ui/react";
 import { Field, Form, Formik } from "formik";
+import { NumericField } from "../general/forms/NumericField";
+import { TextField } from "../general/forms/TextField";
 import { calculateImpermanentLoss } from './helpers';
 
 
 
+
 const ImpermanentLossForm = () => {
-  const initValues = {
-    token1: '',
-    token2: '',
-    startDate: null,
-    endDate: null,
-    positionSize: null
-  }
   const onSubmit = () => {
-    // calculateImpermanentLoss(token1, token2, startDate, endDate); //todo
+    console.log('submitted!')
+    // calculateImpermanentLoss(token1, token2, startDate, endDate, positionSize); //todo
   };
   return (
     <Formik
-      initialValues={initValues}
+      initialValues={{
+        token1: '',
+        token2: '',
+        startDate: '',
+        endDate: '',
+        positionSize: 0
+      }}
       onSubmit={onSubmit}
     >
       {(props) => (
-        <Form>
-          <Field name='token1'>
-            {/* {({ field, form }) => {
-              <FormControl isInvalid={form.errors.token1 && form.touched.token1}>
-                <FormLabel htmlFor='token1'>Token 1</FormLabel>
-                <Input {...field} id='token1' placeholder='token1' />
-              </FormControl>
-            }} */}
-          </Field>
-          <Button
-            mt={4}
-            colorScheme='orange'
-            isLoading={props.isSubmitting}
-            type='submit'
-          >
-            Submit
-          </Button>
-        </Form>
+        <Box>
+          {console.log(props.values)}
+          <Form>
+            <TextField label='Token 1' name='token1' type='text' />
+            <TextField label='Token 2' name='token2' type='text' />
+            <TextField label='Start Date' name='startDate' type='date' />
+            <TextField label='End Date' name='endDate' type='date' />
+            <NumericField label='Position Size' name='positionSize' type='number' />
+            <Button
+              mt={4}
+              colorScheme='orange'
+              isLoading={props.isSubmitting}
+              type='submit'
+              onSubmit={onSubmit}
+            >
+              Submit
+            </Button>
+          </Form>
+        </Box>
       )}
 
     </Formik>

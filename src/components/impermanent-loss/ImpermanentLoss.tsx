@@ -12,7 +12,6 @@ const ImpermanentLoss = () => {
         <Text fontSize='2xl'>Tool to analyze tradeoffs of providing liquidity in crypto</Text>
       </Box>
       <ImpermanentLossForm></ImpermanentLossForm>
-      <Box>TODO</Box>
       <Footer></Footer>
     </Grid>
   </Box>;
