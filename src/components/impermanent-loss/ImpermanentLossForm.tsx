@@ -3,7 +3,7 @@ import { Form, Formik } from "formik";
 import { InputField } from "../general/forms/InputField";
 import { calculateImpermanentLoss } from './helpers';
 
-interface ILFormFields {
+interface ILFields {
   token1: string,
   token2: string,
   startDate: string,
@@ -13,26 +13,27 @@ interface ILFormFields {
 
 
 const ImpermanentLossForm = () => {
-  const onSubmit = ({ token1, token2, startDate, endDate, positionSize }: ILFormFields) => {
-    console.log('submitted!')
-    calculateImpermanentLoss(token1, token2, new Date(startDate),
-      new Date(endDate), positionSize); //todo
+  const initialValues: ILFields = {
+    token1: '',
+    token2: '',
+    startDate: '',
+    endDate: '',
+    positionSize: 0
+  }
+  const onSubmit = (values: ILFields, actions: any) => {
+    calculateImpermanentLoss(values.token1, values.token2, new Date(values.startDate),
+      new Date(values.endDate), values.positionSize);
+    actions.setSubmitting(false);
   };
   return (
     <Formik
-      initialValues={{
-        token1: '',
-        token2: '',
-        startDate: '',
-        endDate: '',
-        positionSize: 0
-      }}
+      initialValues={initialValues}
       onSubmit={onSubmit}
     >
       {(props) => (
         <Box>
-          {console.log(props.values)}
-          <Form>
+          {/* {console.log(props.values)} */}
+          <Form onSubmit={props.handleSubmit}>
             <InputField label='Token 1' name='token1' type='text' />
             <InputField label='Token 2' name='token2' type='text' />
             <InputField label='Start Date' name='startDate' type='date' />
@@ -43,14 +44,12 @@ const ImpermanentLossForm = () => {
               colorScheme='orange'
               isLoading={props.isSubmitting}
               type='submit'
-              onSubmit={onSubmit(props.values)}
             >
               Submit
             </Button>
           </Form>
         </Box>
       )}
-
     </Formik>
   );
 }

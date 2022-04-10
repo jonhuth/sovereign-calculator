@@ -17,12 +17,13 @@ export const formatIlOutput = (il: number, positionSize: number): { ilRel: strin
 export const getPriceData = async (token: string, from: Date, to: Date): Promise<[number, number]> => {
   // todo: screen token inputs
   // todo: screen dates
-  const [fromS, toS] = [dateToTimestamp(from), dateToTimestamp(to)];
-  const url = `https://api.coingecko.com/api/v3/coins/${token}/market_chart/range?vs_currency=usd&from=${fromS}&to=${toS}`;
-  const res = await axios.get(url);
-  const priceData = res.data.prices;
-  const [startPrice, endPrice] = [priceData[0][1], priceData[priceData.length - 1][1]];
-  return [startPrice, endPrice];
+  // const [fromS, toS] = [dateToTimestamp(from), dateToTimestamp(to)];
+  // const url = `https://api.coingecko.com/api/v3/coins/${token}/market_chart/range?vs_currency=usd&from=${fromS}&to=${toS}`;
+  // const res = await axios.get(url);
+  // const priceData = res.data.prices;
+  // const [startPrice, endPrice] = [priceData[0][1], priceData[priceData.length - 1][1]];
+  // return [startPrice, endPrice];
+  return [1, 2];
 }
 
 export const calculateImpermanentLoss = async (token1: string, token2: string, from: Date, to: Date, positionSize: number) => {
