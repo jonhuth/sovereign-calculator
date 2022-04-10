@@ -2,7 +2,7 @@ import { Box, FormLabel, Input } from '@chakra-ui/react'
 import React from 'react'
 import { useField } from 'formik'
 
-export const NumericField = ({ label, ...props}: {label: string, name: string, type: string}) => {
+export const InputField = ({ label, ...props}: {label: string, name: string, type: string}) => {
   const [field, meta] = useField(props);
   return (
     <Box mb={2}>
