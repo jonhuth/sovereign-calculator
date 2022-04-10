@@ -11,7 +11,7 @@ const ImpermanentLoss = () => {
       <Header
         my={8}
         header='Impermanent Loss Calculator'
-        subHeader='Tool to analyze tradeoffs of providing liquidity in crypto' />
+        subHeader='Analyze tradeoffs between HODLing and providing liquidity' />
       <ImpermanentLossForm />
       <Footer></Footer>
     </Grid>

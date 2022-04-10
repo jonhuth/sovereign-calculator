@@ -3,6 +3,7 @@ import { Form, Formik } from "formik";
 import { useState } from "react";
 import * as Yup from 'yup';
 import { InputField } from "../general/forms/InputField";
+import { SubmitButton } from "../general/SubmitButton";
 import { calculateImpermanentLoss } from './helpers';
 
 interface ILFields {
@@ -42,6 +43,7 @@ const ImpermanentLossForm = () => {
 
   });
 
+  // todo: abstract into prop
   const initialValues: ILFields = {
     token1: '',
     token2: '',
@@ -50,13 +52,14 @@ const ImpermanentLossForm = () => {
     positionSize: 100000
   };
 
-
+  // todo: abstract into prop
   const onSubmit = async (values: ILFields, actions: any) => {
     const { rel, abs } = await calculateImpermanentLoss(values.token1, values.token2, new Date(values.startDate),
       new Date(values.endDate), values.positionSize);
     setImpermanentLoss({ rel, abs });
     actions.setSubmitting(false);
   };
+
   return (
     <Formik
       initialValues={initialValues}
@@ -74,14 +77,7 @@ const ImpermanentLossForm = () => {
               <InputField label='End Date' name='endDate' type='date' />
               <InputField label='Position Size' name='positionSize' type='number' />
             </SimpleGrid>
-            <Button
-              mt={4}
-              colorScheme='orange'
-              isLoading={props.isSubmitting}
-              type='submit'
-            >
-              Submit
-            </Button>
+            <SubmitButton isSubmitting={props.isSubmitting} />
           </Form>
           <Box mt={4} mb={2}>
             Impermanent Loss: {impermanentLoss.abs}
