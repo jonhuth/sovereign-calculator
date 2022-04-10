@@ -6,11 +6,12 @@ export const calculateIL = (rStart: number, rEnd: number): number => {
   return ((2 * Math.sqrt(p)) / (p + 1)) - 1
 }
 
-export const formatIlOutput = (il: number, positionSize: number): { ilRel: string, ilAbs: string } => {
-  const formatter = Intl.NumberFormat('en-US', { style: 'percent' });
+export const formatIlOutput = (il: number, positionSize: number): { rel: string, abs: string } => {
+  const percentFormatter = Intl.NumberFormat('en-US', { style: 'percent' });
+  const absFormatter = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
   return {
-    ilRel: formatter.format(il),
-    ilAbs: `${il * positionSize}`
+    rel: percentFormatter.format(il),
+    abs: `${absFormatter.format(il * positionSize)}`
   }
 }
 
@@ -39,8 +40,10 @@ export const calculateImpermanentLoss = async (token1: string, token2: string, f
    * calculateIL(rStart, rEnd)
    * return formatIlOutput(il, positionSize)
    */
-  const [token1StartPrice, token1EndPrice] = await getPriceData(token1, from, to);
-  const [token2StartPrice, token2EndPrice] = await getPriceData(token2, from, to);
+  // const [token1StartPrice, token1EndPrice] = await getPriceData(token1, from, to);
+  // const [token2StartPrice, token2EndPrice] = await getPriceData(token2, from, to);
+  const [token1StartPrice, token1EndPrice] = [1, 2];
+  const [token2StartPrice, token2EndPrice] = [1, .3];
   const [rStart, rEnd] = [token1StartPrice / token2StartPrice, token1EndPrice / token2EndPrice];
   const il = calculateIL(rStart, rEnd);
   return formatIlOutput(il, positionSize);
