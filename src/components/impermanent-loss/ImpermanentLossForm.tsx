@@ -20,7 +20,7 @@ const ImpermanentLossForm = () => {
     token2: '',
     startDate: '',
     endDate: '',
-    positionSize: 0
+    positionSize: 100000
   }
   const onSubmit = async (values: ILFields, actions: any) => {
     const {rel, abs} = await calculateImpermanentLoss(values.token1, values.token2, new Date(values.startDate),
