@@ -73,10 +73,7 @@ const ImpermanentLossForm = () => {
             <SubmitButton isSubmitting={props.isSubmitting} />
           </Form>
           <Box mt={4} mb={2}>
-            Impermanent Loss: {impermanentLoss.abs}
-          </Box>
-          <Box>
-            Impermanent Loss (%): {impermanentLoss.rel}
+            Impermanent Loss: {impermanentLoss.abs} {impermanentLoss.rel ? `(${impermanentLoss.rel})` : ''}
           </Box>
         </Box>
       )}
