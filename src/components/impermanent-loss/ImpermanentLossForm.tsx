@@ -12,16 +12,18 @@ interface ILFields {
   startDate: string,
   endDate: string,
   positionSize: number,
-  feeApr: number
+  lpFeeRate: number
 }
+
+// type OutputTypes = 'lp' | 'hodl' | 'il' | 'netIl';
 
 
 const ImpermanentLossForm = () => {
   const [stats, setStats] = useState({
-    ilRel: '', ilAbs: '',
-    hodlRel: '', hodlAbs: '',
-    lpRel: '', lpAbs: '',
-    netIlRel: '', netIlAbs: ''
+    il: {rel: '', abs: ''},
+    netIl: {rel: '', abs: ''},
+    hodl: {rel: '', abs: ''},
+    lp: {rel: '', abs: ''}
   });
 
   const validate = Yup.object({
@@ -39,7 +41,7 @@ const ImpermanentLossForm = () => {
       .min(0, 'Must be non-negative')
       .max((2 ** 64) - 1, 'Value too big')
       .required('Field is required'),
-    feeApr: Yup.number()
+    lpFeeRate: Yup.number()
       .min(0, 'Must be non-negative')
       .max((2 ** 64) - 1, 'Value too big')
       .required('Field is required'),
@@ -52,12 +54,12 @@ const ImpermanentLossForm = () => {
     startDate: '2021-04-10',
     endDate: '2022-04-10',
     positionSize: 100000,
-    feeApr: 0
+    lpFeeRate: 0
   };
 
   const onSubmit = async (values: ILFields, actions: any) => {
     const res = await calculateImpermanentLoss(values.token1, values.token2, new Date(values.startDate),
-      new Date(values.endDate), values.positionSize, values.feeApr);
+      new Date(values.endDate), values.positionSize, values.lpFeeRate);
     setStats(res);
     actions.setSubmitting(false);
   };
@@ -78,21 +80,28 @@ const ImpermanentLossForm = () => {
               <InputField label='Start Date' name='startDate' type='date' />
               <InputField label='End Date' name='endDate' type='date' />
               <InputField label='Position Size' name='positionSize' type='number' />
-              <InputField label='Yield From Fees' name='feeApr' type='number' />
+              <InputField label='Yield From Fees' name='lpFeeRate' type='number' />
             </SimpleGrid>
             <SubmitButton isSubmitting={props.isSubmitting} />
           </Form>
+          {/* doesn't quite work yet; todo */}
+          {/* {
+            Object.keys(stats).map((value: string) => {
+              const {rel, abs} = stats[value as OutputTypes];
+              return <Box my={4}>{abs} {rel ? `(${rel})`: ''}</Box>;
+            })
+          } */}
           <Box my={4}>
-            LP Net Change: {stats.lpAbs} {stats.lpRel ? `(${stats.lpRel})` : ''}
+            LP Net Change: {stats.lp.abs} {stats.lp.rel ? `(${stats.lp.rel})` : ''}
           </Box>
           <Box my={4}>
-            HODL Net Change: {stats.hodlAbs} {stats.hodlRel ? `(${stats.hodlRel})` : ''}
+            HODL Net Change: {stats.hodl.abs} {stats.hodl.rel ? `(${stats.hodl.rel})` : ''}
           </Box>
           <Box my={4}>
-            Impermanent Loss: {stats.ilAbs} {stats.ilRel ? `(${stats.ilRel})` : ''}
+            Impermanent Loss: {stats.il.abs} {stats.il.rel ? `(${stats.il.rel})` : ''}
           </Box>
           <Box my={4}>
-            Impermanent Loss After Fees: {stats.netIlAbs} {stats.netIlRel ? `(${stats.netIlRel})` : ''}
+            Impermanent Loss After Fees: {stats.netIl.abs} {stats.netIl.rel ? `(${stats.netIl.rel})` : ''}
           </Box>
         </Box>
       )}
