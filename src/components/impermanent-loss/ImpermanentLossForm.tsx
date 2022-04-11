@@ -41,16 +41,14 @@ const ImpermanentLossForm = () => {
 
   });
 
-  // todo: abstract into prop
   const initialValues: ILFields = {
-    token1: '',
-    token2: '',
-    startDate: '',
-    endDate: '',
+    token1: 'ethereum',
+    token2: 'rocket-pool',
+    startDate: '2021-04-10',
+    endDate: '2022-04-10',
     positionSize: 100000
   };
 
-  // todo: abstract into prop
   const onSubmit = async (values: ILFields, actions: any) => {
     const res = await calculateImpermanentLoss(values.token1, values.token2, new Date(values.startDate),
       new Date(values.endDate), values.positionSize);
