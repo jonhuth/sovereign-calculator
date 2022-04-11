@@ -16,7 +16,12 @@ interface ILFields {
 
 
 const ImpermanentLossForm = () => {
-  const [impermanentLoss, setImpermanentLoss] = useState({ rel: '', abs: '' });
+  const [stats, setStats] = useState({
+    ilRel: '', ilAbs: '',
+    hodlRel: '', hodlAbs: '',
+    lpRel: '', lpAbs: '',
+    // netIlRel: '', netIlAbs: ''
+  });
 
   const validate = Yup.object({
     token1: Yup.string()
@@ -47,9 +52,9 @@ const ImpermanentLossForm = () => {
 
   // todo: abstract into prop
   const onSubmit = async (values: ILFields, actions: any) => {
-    const { rel, abs } = await calculateImpermanentLoss(values.token1, values.token2, new Date(values.startDate),
+    const res = await calculateImpermanentLoss(values.token1, values.token2, new Date(values.startDate),
       new Date(values.endDate), values.positionSize);
-    setImpermanentLoss({ rel, abs });
+    setStats(res);
     actions.setSubmitting(false);
   };
 
@@ -73,8 +78,17 @@ const ImpermanentLossForm = () => {
             <SubmitButton isSubmitting={props.isSubmitting} />
           </Form>
           <Box mt={4} mb={2}>
-            Impermanent Loss: {impermanentLoss.abs} {impermanentLoss.rel ? `(${impermanentLoss.rel})` : ''}
+            LP Net Change: {stats.lpAbs} {stats.lpRel ? `(${stats.lpRel})` : ''}
           </Box>
+          <Box mt={4} mb={2}>
+            HODL Net Change: {stats.hodlAbs} {stats.hodlRel ? `(${stats.hodlRel})` : ''}
+          </Box>
+          <Box mt={4} mb={2}>
+            Impermanent Loss: {stats.ilAbs} {stats.ilRel ? `(${stats.ilRel})` : ''}
+          </Box>
+          {/* <Box mt={4} mb={2}>
+            Impermanent Loss After Fees: {stats.netIlAbs} {stats.netIlAbs ? `(${stats.netIlAbs})` : ''}
+          </Box> */}
         </Box>
       )}
     </Formik>

@@ -1,18 +1,34 @@
 import axios from "axios";
-import { dateToTimestamp } from "../general/helpers";
+import { dateToTimestamp, formatReturn } from '../general/helpers';
 
 export const calculateIL = (rStart: number, rEnd: number): number => {
-  const p = rStart / rEnd // change in exchange rate between token1 and 2
-  return ((2 * Math.sqrt(p)) / (p + 1)) - 1
+  const p = rStart / rEnd; // change in exchange rate between token1 and 2
+  return ((2 * Math.sqrt(p)) / (p + 1)) - 1;
 }
 
-export const formatIlOutput = (il: number, positionSize: number): { rel: string, abs: string } => {
-  const percentFormatter = Intl.NumberFormat('en-US', { style: 'percent', maximumFractionDigits: 2 });
-  const absFormatter = Intl.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+export const calculateHodlReturn = (tokenPrices: [[number, number], [number, number]],
+  initWeights: [number, number] = [.5, .5]): number => {
+  // output is net change vs $
+  const [t1, t2] = tokenPrices;
+  return initWeights[0] * ((t1[1] / t1[0]) - 1) + initWeights[1] * ((t2[1] / t2[0]) - 1);
+}
+
+export const getOutput = (il: number, hodlReturn: number, positionSize: number): {
+  ilRel: string, ilAbs: string,
+  hodlRel: string, hodlAbs: string,
+  lpRel: string, lpAbs: string,
+  // netIlRel: string, netIlAbs: string
+} => {
   return {
-    rel: percentFormatter.format(il),
-    abs: `${absFormatter.format(il * positionSize)}`
-  }
+    ilRel: formatReturn(il),
+    ilAbs: formatReturn(il * positionSize, false),
+    hodlRel: formatReturn(hodlReturn),
+    hodlAbs: formatReturn(hodlReturn * positionSize, false),
+    lpRel: formatReturn(il + hodlReturn),
+    lpAbs: formatReturn((il + hodlReturn) * positionSize, false),
+    // netIlRel: formatReturn(),
+    // netIlAbs: formatReturn(, false)
+  };
 }
 
 export const getPriceData = async (token: string, from: Date, to: Date): Promise<[number, number]> => {
@@ -37,11 +53,12 @@ export const calculateImpermanentLoss = async (token1: string, token2: string, f
    *  rStart = p1/p2 on from date
    *  rEnd = p1/p2 on to date
    * calculateIL(rStart, rEnd)
-   * return formatIlOutput(il, positionSize)
+   * return getOutput(il, positionSize)
    */
-  const [token1StartPrice, token1EndPrice] = await getPriceData(token1, from, to);
-  const [token2StartPrice, token2EndPrice] = await getPriceData(token2, from, to);
-  const [rStart, rEnd] = [token1StartPrice / token2StartPrice, token1EndPrice / token2EndPrice];
+  const [t1StartPrice, t1EndPrice] = await getPriceData(token1, from, to);
+  const [t2StartPrice, t2EndPrice] = await getPriceData(token2, from, to);
+  const [rStart, rEnd] = [t1StartPrice / t2StartPrice, t1EndPrice / t2EndPrice];
   const il = calculateIL(rStart, rEnd);
-  return formatIlOutput(il, positionSize);
+  const hodlReturn = calculateHodlReturn([[t1StartPrice, t1EndPrice], [t2StartPrice, t2EndPrice]]);
+  return getOutput(il, hodlReturn, positionSize);
 }
