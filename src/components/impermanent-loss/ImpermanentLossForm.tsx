@@ -1,4 +1,4 @@
-import { Box, Button, SimpleGrid } from "@chakra-ui/react";
+import { Box, SimpleGrid } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useState } from "react";
 import * as Yup from 'yup';
@@ -18,11 +18,6 @@ interface ILFields {
 const ImpermanentLossForm = () => {
   const [impermanentLoss, setImpermanentLoss] = useState({ rel: '', abs: '' });
 
-  const validateEndDate = (startDate: Date, schema: any) => {
-    const now = new Date();
-    return startDate && schema.min(startDate) && schema.max(now);
-  };
-
   const validate = Yup.object({
     token1: Yup.string()
       .required('Field is required'),
@@ -33,9 +28,7 @@ const ImpermanentLossForm = () => {
     endDate: Yup.date()
       .required('Field is required')
       .min(Yup.ref('startDate'), 'End date must come after start date')
-      .max(new Date(), 'End date cannot be in the future')
-      // .when('startDate', validateEndDate)
-      ,
+      .max(new Date(), 'End date cannot be in the future'),
     positionSize: Yup.number()
       .min(0, 'Must be non-negative')
       .max((2 ** 64) - 1, 'Value too big')
