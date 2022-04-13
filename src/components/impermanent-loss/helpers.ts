@@ -1,5 +1,8 @@
 import axios from "axios";
+import { string } from "yup";
 import { dateToTimestamp, formatReturn } from '../general/helpers';
+
+const baseUrl = 'https://api.coingecko.com/api/v3';
 
 export const calculateIL = (tokenPrices: [number, number][]): number => {
   const [rStart, rEnd] = [tokenPrices[0][0] / tokenPrices[1][0], tokenPrices[0][1] / tokenPrices[1][1]];
@@ -23,10 +26,10 @@ export const calculateHodlReturn = (tokenPrices: [number, number][],
 }
 
 export const getOutput = (il: number, hodlReturn: number, netIl: number, positionSize: number): {
-  il: {rel: string, abs: string},
-  netIl: {rel: string, abs: string}
-  hodl: {rel: string, abs: string},
-  lp: {rel: string, abs: string},
+  il: { rel: string, abs: string },
+  netIl: { rel: string, abs: string }
+  hodl: { rel: string, abs: string },
+  lp: { rel: string, abs: string },
 } => {
   return {
     il: {
@@ -51,11 +54,19 @@ export const getOutput = (il: number, hodlReturn: number, netIl: number, positio
 export const getPriceData = async (token: string, from: Date, to: Date): Promise<[number, number]> => {
   // todo: validate token inputs
   const [fromS, toS] = [dateToTimestamp(from), dateToTimestamp(to)];
-  const url = `https://api.coingecko.com/api/v3/coins/${token}/market_chart/range?vs_currency=usd&from=${fromS}&to=${toS}`;
+  const url = `${baseUrl}/coins/${token}/market_chart/range?vs_currency=usd&from=${fromS}&to=${toS}`;
   const res = await axios.get(url);
   const priceData = res.data.prices;
   const [startPrice, endPrice] = [priceData[0][1], priceData[priceData.length - 1][1]];
   return [startPrice, endPrice];
+}
+
+export const getTokens = async () => {
+  const tokensUrl = `${baseUrl}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=500&page=1&sparkline=false`;
+  const res = await axios.get(tokensUrl);
+  return res.data.map((token: { id: string, symbol: string, name: string }) => {
+    return { value: token.id, label: token.name }
+  });
 }
 
 export const calculateImpermanentLoss = async (token1: string, token2: string, from: Date, to: Date, positionSize: number, lpFeeRate: number) => {

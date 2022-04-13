@@ -1,10 +1,11 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { useState } from "react";
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { InputField } from "../general/forms/InputField";
 import { SubmitButton } from "../general/SubmitButton";
-import { calculateImpermanentLoss } from './helpers';
+import { calculateImpermanentLoss, getTokens } from './helpers';
+import { SelectInputField } from '../general/forms/SelectInputField';
 
 interface ILFields {
   token1: string,
@@ -20,11 +21,20 @@ interface ILFields {
 
 const ImpermanentLossForm = () => {
   const [stats, setStats] = useState({
-    il: {rel: '', abs: ''},
-    netIl: {rel: '', abs: ''},
-    hodl: {rel: '', abs: ''},
-    lp: {rel: '', abs: ''}
+    il: { rel: '', abs: '' },
+    netIl: { rel: '', abs: '' },
+    hodl: { rel: '', abs: '' },
+    lp: { rel: '', abs: '' }
   });
+  // const [tokens, setTokens] = useState([]);
+
+  // useEffect(() => {
+  //   const fetchTokens = async () => {
+  //     setTokens(await getTokens());
+  //   }
+  //   fetchTokens().catch(console.error);
+  // }, []);
+
 
   const validate = Yup.object({
     token1: Yup.string()
@@ -77,6 +87,8 @@ const ImpermanentLossForm = () => {
             <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={5} justifySelf='center'>
               <InputField label='Token 1' name='token1' type='text' />
               <InputField label='Token 2' name='token2' type='text' />
+              {/* <SelectInputField label='Token 1' name='token1' type='search' data={tokens} />
+              <SelectInputField label='Token 2' name='token2' type='search' data={tokens} /> */}
               <InputField label='Start Date' name='startDate' type='date' />
               <InputField label='End Date' name='endDate' type='date' />
               <InputField label='Position Size' name='positionSize' type='number' />
@@ -84,13 +96,6 @@ const ImpermanentLossForm = () => {
             </SimpleGrid>
             <SubmitButton isSubmitting={props.isSubmitting} />
           </Form>
-          {/* doesn't quite work yet; todo */}
-          {/* {
-            Object.keys(stats).map((value: string) => {
-              const {rel, abs} = stats[value as OutputTypes];
-              return <Box my={4}>{abs} {rel ? `(${rel})`: ''}</Box>;
-            })
-          } */}
           <Box my={4}>
             LP Net Change: {stats.lp.abs} {stats.lp.rel ? `(${stats.lp.rel})` : ''}
           </Box>
