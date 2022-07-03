@@ -1,11 +1,10 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 import * as Yup from 'yup';
 import { InputField } from "../general/forms/InputField";
 import { SubmitButton } from "../general/SubmitButton";
-import { calculateImpermanentLoss, getTokens } from './helpers';
-import { SelectInputField } from '../general/forms/SelectInputField';
+import { calculateImpermanentLoss } from './helpers';
 
 interface ILFields {
   token1: string,
@@ -16,9 +15,6 @@ interface ILFields {
   lpFeeRate: number
 }
 
-// type OutputTypes = 'lp' | 'hodl' | 'il' | 'netIl';
-
-
 const ImpermanentLossForm = () => {
   const [stats, setStats] = useState({
     il: { rel: '', abs: '' },
@@ -26,15 +22,6 @@ const ImpermanentLossForm = () => {
     hodl: { rel: '', abs: '' },
     lp: { rel: '', abs: '' }
   });
-  // const [tokens, setTokens] = useState([]);
-
-  // useEffect(() => {
-  //   const fetchTokens = async () => {
-  //     setTokens(await getTokens());
-  //   }
-  //   fetchTokens().catch(console.error);
-  // }, []);
-
 
   const validate = Yup.object({
     token1: Yup.string()

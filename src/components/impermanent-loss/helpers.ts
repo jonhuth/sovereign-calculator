@@ -1,5 +1,4 @@
 import axios from "axios";
-import { string } from "yup";
 import { dateToTimestamp, formatReturn } from '../general/helpers';
 
 const baseUrl = 'https://api.coingecko.com/api/v3';
