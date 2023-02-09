@@ -1,22 +1,24 @@
-import { Box, FormLabel, Input, Select } from '@chakra-ui/react';
+import { Box, FormLabel, Select } from '@chakra-ui/react';
 import { ErrorMessage, useField } from 'formik';
 
-export const SelectInputField = ({ label, data, ...props }: {
-  label: string, name: string,
-  type: string, data: any[]
-}) => {
+export interface Option {
+  label: string;
+  value: string;
+}
+
+export const SelectInputField = ({ label, options, ...props }:
+  { label: string, name: string, options: Option[] }) => {
   const [field] = useField(props);
   return (
     <Box mb={2}>
       <FormLabel htmlFor={field.name}>{label}</FormLabel>
-      {/* <Select>
-        {data.map((item, idx) => {
+      <Select {...field}>
+        {options.map(({ value, label }, idx) => {
           return (
-            <option key={idx} value={item.value}>{item.label}</option>
+            <option key={idx} value={value}>{label}</option>
           )
         })}
-      </Select> */}
-      <Input autoComplete='off' {...field} {...props} />
+      </Select>
       <ErrorMessage name={field.name} />
     </Box>
   )

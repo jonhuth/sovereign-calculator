@@ -61,10 +61,10 @@ export const getPriceData = async (token: string, from: Date, to: Date): Promise
 }
 
 export const getTokens = async () => {
-  const tokensUrl = `${baseUrl}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=500&page=1&sparkline=false`;
+  const tokensUrl = `${baseUrl}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1`;
   const res = await axios.get(tokensUrl);
   return res.data.map((token: { id: string, symbol: string, name: string }) => {
-    return { value: token.id, label: token.name }
+    return { value: token.id, label: `${token.name} (${token.symbol})` }
   });
 }
 

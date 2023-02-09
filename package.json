@@ -13,6 +13,7 @@
     "@types/node": "^12.20.47",
     "@types/react": "^16.14.24",
     "axios": "^0.26.1",
+    "chakra-ui-autocomplete": "^1.4.5",
     "formik": "^2.2.9",
     "framer-motion": "^3.10.6",
     "react": "^18.0.0",

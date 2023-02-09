@@ -1,10 +1,11 @@
 import { Box, SimpleGrid } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
 import { InputField } from "../general/forms/InputField";
+import { SelectInputField } from "../general/forms/SelectInputField";
 import { SubmitButton } from "../general/SubmitButton";
-import { calculateImpermanentLoss } from './helpers';
+import { calculateImpermanentLoss, getTokens } from './helpers';
 
 interface ILFields {
   token1: string,
@@ -16,6 +17,18 @@ interface ILFields {
 }
 
 const ImpermanentLossForm = () => {
+
+  const [tokenOpts, setTokenOpts] = useState([]);
+
+  useEffect(() => {
+    async function getTokenOpts() {
+      const tokenOpts = await getTokens();
+      setTokenOpts(tokenOpts);
+    }
+    getTokenOpts();
+  }, []);
+  // console.log(tokenOpts)
+
   const [stats, setStats] = useState({
     il: { rel: '', abs: '' },
     netIl: { rel: '', abs: '' },
@@ -69,13 +82,10 @@ const ImpermanentLossForm = () => {
     >
       {(props) => (
         <Box>
-          {/* {console.log(props.values)} */}
           <Form onSubmit={props.handleSubmit}>
             <SimpleGrid columns={{ sm: 1, md: 2 }} spacing={5} justifySelf='center'>
-              <InputField label='Token 1' name='token1' type='text' />
-              <InputField label='Token 2' name='token2' type='text' />
-              {/* <SelectInputField label='Token 1' name='token1' type='search' data={tokens} />
-              <SelectInputField label='Token 2' name='token2' type='search' data={tokens} /> */}
+              <SelectInputField label='Token 1' name='token1' options={tokenOpts} />
+              <SelectInputField label='Token 2' name='token2' options={tokenOpts} />
               <InputField label='Start Date' name='startDate' type='date' />
               <InputField label='End Date' name='endDate' type='date' />
               <InputField label='Position Size' name='positionSize' type='number' />
