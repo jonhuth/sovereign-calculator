@@ -1,13 +1,15 @@
-import { Box, FormLabel, Input } from '@chakra-ui/react';
-import { ErrorMessage, useField } from 'formik';
+import { Box, FormControl, FormErrorMessage, FormLabel, Input } from '@chakra-ui/react';
+import { useField } from 'formik';
 
-export const InputField = ({ label, ...props }: { label: string, name: string, type: string }) => {
-  const [field] = useField(props);
+export const InputField = ({ label, name, type }: { label: string, name: string, type: string }) => {
+  const [field, meta] = useField(name);
   return (
     <Box mb={2}>
-      <FormLabel htmlFor={field.name}>{label}</FormLabel>
-      <Input autoComplete='off' {...field} {...props} />
-      <ErrorMessage name={field.name} />
+      <FormControl isInvalid={!!meta.error && meta.touched}>
+        <FormLabel htmlFor={name}>{label}</FormLabel>
+        <Input autoComplete='off' {...field} type={type} />
+        <FormErrorMessage>{meta.error}</FormErrorMessage>
+      </FormControl>
     </Box>
   )
 }
