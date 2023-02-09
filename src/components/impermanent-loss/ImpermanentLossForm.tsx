@@ -5,7 +5,8 @@ import * as Yup from 'yup';
 import { InputField } from "../general/forms/InputField";
 import { SelectInputField } from "../general/forms/SelectInputField";
 import { SubmitButton } from "../general/SubmitButton";
-import { calculateImpermanentLoss, getTokens } from './helpers';
+import { getTokens } from "./coin-gecko.service";
+import { calculateImpermanentLoss } from './helpers';
 
 interface ILFields {
   token1: string,
@@ -27,7 +28,6 @@ const ImpermanentLossForm = () => {
     }
     getTokenOpts();
   }, []);
-  // console.log(tokenOpts)
 
   const [stats, setStats] = useState({
     il: { rel: '', abs: '' },
@@ -89,7 +89,7 @@ const ImpermanentLossForm = () => {
               <InputField label='Start Date' name='startDate' type='date' />
               <InputField label='End Date' name='endDate' type='date' />
               <InputField label='Position Size' name='positionSize' type='number' />
-              <InputField label='Yield From Fees' name='lpFeeRate' type='number' />
+              <InputField label='Yield From Fees (decimal)' name='lpFeeRate' type='number' />
             </SimpleGrid>
             <SubmitButton isSubmitting={props.isSubmitting} />
           </Form>

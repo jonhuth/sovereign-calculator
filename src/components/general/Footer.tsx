@@ -1,5 +1,6 @@
-import { personalSiteUrl } from './constants';
 import { Flex, Box, Link } from '@chakra-ui/react';
+
+const personalSiteUrl = 'https://jonhuth.github.io/personal/';
 
 const Footer = () => (
   <Flex

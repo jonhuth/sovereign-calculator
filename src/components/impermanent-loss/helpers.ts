@@ -1,9 +1,15 @@
-import axios from "axios";
-import { dateToTimestamp, formatReturn } from '../general/helpers';
+import { formatReturn } from '../general/format-helpers';
+import { getPriceData } from "./coin-gecko.service";
 
-const baseUrl = 'https://api.coingecko.com/api/v3';
+export interface IlOutput {
+  il: { rel: string, abs: string };
+  netIl: { rel: string, abs: string };
+  hodl: { rel: string, abs: string };
+  lp: { rel: string, abs: string };
+}
 
-export const calculateIL = (tokenPrices: [number, number][]): number => {
+
+export const calculateIlReturn = (tokenPrices: [number, number][]): number => {
   const [rStart, rEnd] = [tokenPrices[0][0] / tokenPrices[1][0], tokenPrices[0][1] / tokenPrices[1][1]];
   const p = rStart / rEnd; // change in exchange rate between token1 and 2
   return ((2 * Math.sqrt(p)) / (p + 1)) - 1; // todo: generalize to > 2 tokens + non-uniform weightings
@@ -12,7 +18,6 @@ export const calculateIL = (tokenPrices: [number, number][]): number => {
 export const calculateHodlReturn = (tokenPrices: [number, number][],
   initWeights: number[] = [.5, .5]): number => {
   // output is net change vs $
-  // todo: throw a warning if tokenPrices.length !== initWeights.length
   if (tokenPrices.length !== initWeights.length) throw console.error('mismatch in input array lengths!');
 
   let sumProd = 0
@@ -24,16 +29,18 @@ export const calculateHodlReturn = (tokenPrices: [number, number][],
   return sumProd;
 }
 
-export const getOutput = (il: number, hodlReturn: number, netIl: number, positionSize: number): {
-  il: { rel: string, abs: string },
-  netIl: { rel: string, abs: string }
-  hodl: { rel: string, abs: string },
-  lp: { rel: string, abs: string },
-} => {
+export const calculateImpermanentLoss = async (token1: string, token2: string, from: Date, to: Date, positionSize: number, lpFeeRate: number): Promise<IlOutput> => {
+  // todo: allow different splits/number of assets
+  // todo: also return: hodl return absolute, relative + pool profit absolute, relative
+  const [t1StartPrice, t1EndPrice] = await getPriceData(token1, from, to);
+  const [t2StartPrice, t2EndPrice] = await getPriceData(token2, from, to);
+  const ilRate = calculateIlReturn([[t1StartPrice, t1EndPrice], [t2StartPrice, t2EndPrice]]); // <= 0
+  const netIl = ilRate + lpFeeRate;
+  const hodlReturn = calculateHodlReturn([[t1StartPrice, t1EndPrice], [t2StartPrice, t2EndPrice]]);
   return {
     il: {
-      rel: formatReturn(il),
-      abs: formatReturn(il * positionSize, false)
+      rel: formatReturn(ilRate),
+      abs: formatReturn(ilRate * positionSize, false)
     },
     netIl: {
       rel: formatReturn(netIl),
@@ -48,33 +55,4 @@ export const getOutput = (il: number, hodlReturn: number, netIl: number, positio
       abs: formatReturn((netIl + hodlReturn) * positionSize, false)
     }
   };
-}
-
-export const getPriceData = async (token: string, from: Date, to: Date): Promise<[number, number]> => {
-  // todo: validate token inputs
-  const [fromS, toS] = [dateToTimestamp(from), dateToTimestamp(to)];
-  const url = `${baseUrl}/coins/${token}/market_chart/range?vs_currency=usd&from=${fromS}&to=${toS}`;
-  const res = await axios.get(url);
-  const priceData = res.data.prices;
-  const [startPrice, endPrice] = [priceData[0][1], priceData[priceData.length - 1][1]];
-  return [startPrice, endPrice];
-}
-
-export const getTokens = async () => {
-  const tokensUrl = `${baseUrl}/coins/markets?vs_currency=usd&order=market_cap_desc&per_page=250&page=1`;
-  const res = await axios.get(tokensUrl);
-  return res.data.map((token: { id: string, symbol: string, name: string }) => {
-    return { value: token.id, label: `${token.name} (${token.symbol})` }
-  });
-}
-
-export const calculateImpermanentLoss = async (token1: string, token2: string, from: Date, to: Date, positionSize: number, lpFeeRate: number) => {
-  // todo: allow different splits/number of assets
-  // todo: also return: hodl return absolute, relative + pool profit absolute, relative
-  const [t1StartPrice, t1EndPrice] = await getPriceData(token1, from, to);
-  const [t2StartPrice, t2EndPrice] = await getPriceData(token2, from, to);
-  const ilRate = calculateIL([[t1StartPrice, t1EndPrice], [t2StartPrice, t2EndPrice]]); // <= 0
-  const netIl = ilRate + lpFeeRate;
-  const hodlReturn = calculateHodlReturn([[t1StartPrice, t1EndPrice], [t2StartPrice, t2EndPrice]]);
-  return getOutput(ilRate, hodlReturn, netIl, positionSize);
 }
