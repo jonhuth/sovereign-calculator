@@ -2,6 +2,7 @@ import { Box, SimpleGrid } from "@chakra-ui/react";
 import { Form, Formik } from "formik";
 import { useEffect, useState } from 'react';
 import * as Yup from 'yup';
+import { today, beginningOfYear } from '../general/format-helpers';
 import { InputField } from "../general/forms/InputField";
 import { SelectInputField } from "../general/forms/SelectInputField";
 import { SubmitButton } from "../general/SubmitButton";
@@ -61,10 +62,10 @@ const ImpermanentLossForm = () => {
   const initialValues: ILFields = {
     token1: 'ethereum',
     token2: 'rocket-pool',
-    startDate: '2021-04-10',
-    endDate: '2022-04-10',
+    startDate: beginningOfYear(),
+    endDate: today(),
     positionSize: 100000,
-    lpFeeRate: 0
+    lpFeeRate: .01
   };
 
   const onSubmit = async (values: ILFields, actions: any) => {
