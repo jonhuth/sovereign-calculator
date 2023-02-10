@@ -21,9 +21,5 @@ export const toPercent = (num: number): string => {
   return formatter.format(num);
 }
 
-export const formatReturn = (r: number, fmtPercent: boolean = true) => {
-  if (fmtPercent) {
-    return `${r >= 0 ? '+' : ''}${toPercent(r)}`;
-  }
-  return `${r >= 0 ? '+' : ''}${toCurrency(r)}`;
-}
+export const formatReturn = (r: number, fmtPercent: boolean = true) =>
+  `${r >= 0 ? '+' : ''}${fmtPercent ? toPercent(r) : toCurrency(r)}`;
